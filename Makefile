@@ -1,8 +1,9 @@
 .PHONY: all docker install
 
 DOCKER=docker
-INSTALL=install
 GO=go
+INSTALL=install
+SYSTEMCTL=systemctl
 
 all: HKUST-MATH-Seminar-to-iCal x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal
 
@@ -11,6 +12,7 @@ docker: x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal
 
 install: all docker
 	$(INSTALL) -Dm0644 docker-seminar.service /etc/systemd/system/docker-seminar.service
+	$(SYSTEMCTL) daemon-reload || true
 
 HKUST-MATH-Seminar-to-iCal: ical.go main.go pattern.go util.go
 	$(GO) build -o $@
