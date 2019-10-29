@@ -145,6 +145,10 @@ func iCalWriteErrorMessage(w *iCalWriter, msg string) {
 	if err != nil {
 		panic(xerrors.Errorf("failed to write error message: %w", err))
 	}
+	_, err = io.WriteString(w, "UID:52c289c8-474f-43fe-b8c0-0d8de83f87db")
+	if err != nil {
+		panic(xerrors.Errorf("failed to write error message: %w", err))
+	}
 	_, err = io.WriteString(w, fmt.Sprintf("DESCRIPTION:%s\n", iCalEscapeText(msg)))
 	if err != nil {
 		panic(xerrors.Errorf("failed to write error message: %w", err))
