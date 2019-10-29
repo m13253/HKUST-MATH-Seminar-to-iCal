@@ -21,7 +21,6 @@ package main
 
 import (
 	"bytes"
-	"log"
 	"strings"
 
 	"golang.org/x/net/html/atom"
@@ -92,6 +91,5 @@ func innerText(s *goquery.Selection) string {
 		f(n)
 	}
 
-	log.Printf("%q\n", buf.String())
 	return buf.String()
 }

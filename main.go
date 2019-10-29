@@ -1,5 +1,5 @@
 /*
-  HKUST-MATH-Seminar-to-iCal -- Convert HKUST MATH department seminar 
+  HKUST-MATH-Seminar-to-iCal -- Convert HKUST MATH department seminar
   calendar into iCal format
   Copyright (C) 2019  StarBrilliant
 
@@ -25,11 +25,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/gorilla/handlers"
 	"golang.org/x/xerrors"
 )
 
@@ -284,10 +286,11 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	h := &handler{}
 
-	http.Handle("/math-seminar.ics", h)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	servemux := http.NewServeMux()
+	servemux.Handle("/math-seminar.ics", h)
+	servemux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/math-seminar.ics", http.StatusFound)
 	})
 	log.Println("Listening on http://*:19777/math-seminar.ics")
-	http.ListenAndServe(":19777", nil)
+	http.ListenAndServe(":19777", handlers.CombinedLoggingHandler(os.Stdout, servemux))
 }
