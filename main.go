@@ -68,7 +68,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		status = http.StatusInternalServerError
 		panic(err)
 	}
-	//crawlReq.Header.Set("User-Agent", "Mozilla/5.0 HKUST-MATH-Seminar-to-iCal (+https://github.com/m13253/HKUST-MATH-Seminar-to-iCal)")
+	crawlReq.Header.Set("User-Agent", "Mozilla/5.0 HKUST-MATH-Seminar-to-iCal (+https://github.com/m13253/HKUST-MATH-Seminar-to-iCal)")
 	resp, err := http.DefaultClient.Do(crawlReq)
 	if err != nil {
 		iCalWriteErrorMessage(wr, fmt.Sprintf("Failed to access www.math.ust.hk: %s", err))
