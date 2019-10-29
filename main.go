@@ -128,6 +128,10 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		} else {
 			summary = titleLines[0]
 		}
+		description := fmt.Sprintf("%s\n\nSpeaker: %s", title, speaker)
+		if len(attachment) != 0 {
+			description += "\nPoster: " + attachment
+		}
 
 		if len(dateLines) < 2 {
 			if !iCalHasError {
@@ -246,7 +250,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(xerrors.Errorf("failed to write calendar event: %w", err))
 		}
-		_, err = io.WriteString(wr, fmt.Sprintf("DESCRIPTION:%s\n", iCalEscapeText(title)))
+		_, err = io.WriteString(wr, fmt.Sprintf("DESCRIPTION:%s\n", iCalEscapeText(description)))
 		if err != nil {
 			panic(xerrors.Errorf("failed to write calendar event: %w", err))
 		}

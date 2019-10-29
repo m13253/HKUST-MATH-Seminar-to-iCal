@@ -4,7 +4,7 @@ DOCKER=docker
 INSTALL=install
 GO=go
 
-all: HKUST-MATH-Seminar-to-iCal
+all: HKUST-MATH-Seminar-to-iCal x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal
 
 docker: x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal
 	$(DOCKER) build -t seminar .
@@ -12,8 +12,8 @@ docker: x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal
 install: all docker
 	$(INSTALL) -Dm0644 docker-seminar.service /etc/systemd/system/docker-seminar.service
 
-HKUST-MATH-Seminar-to-iCal: *.go
+HKUST-MATH-Seminar-to-iCal: ical.go main.go pattern.go util.go
 	$(GO) build -o $@
 
-x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal: *.go
+x86_64-linux-gnu-HKUST-MATH-Seminar-to-iCal: ical.go main.go pattern.go util.go
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build -o $@
