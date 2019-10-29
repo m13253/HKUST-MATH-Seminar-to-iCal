@@ -1,0 +1,14 @@
+[Unit]
+Description=HKUST-MATH-Seminar-to-iCal
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/env docker run -d -p [::1]:19777:19777 --name seminar --rm seminar
+ExecStart=/usr/bin/env docker start -a seminar
+ExecStop=/usr/bin/env docker stop seminar
+Restart=always
+RestartSec=3
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

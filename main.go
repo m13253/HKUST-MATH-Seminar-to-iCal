@@ -288,6 +288,6 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/math-seminar.ics", http.StatusFound)
 	})
-	log.Println("Listening on http://*:19777")
+	log.Println("Listening on http://*:19777/math-seminar.ics")
 	http.ListenAndServe(":19777", nil)
 }
