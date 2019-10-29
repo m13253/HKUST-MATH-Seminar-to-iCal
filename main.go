@@ -130,7 +130,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		description := fmt.Sprintf("%s\n\nSpeaker: %s", title, speaker)
 		if len(attachment) != 0 {
-			description += "\nPoster: " + attachment
+			description += "\nPoster: " + strings.ReplaceAll(attachment, " ", "%20")
 		}
 
 		if len(dateLines) < 2 {
