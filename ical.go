@@ -57,13 +57,14 @@ func (w *iCalWriter) Write(s []byte) (n int, err error) {
 		case c < 0xf0:
 			threshold = 73
 		default:
+			threshold = 72
 		}
 		if w.col >= threshold {
 			_, err = w.wr.Write([]byte{'\r', '\n', ' ', c})
 			if err != nil {
 				return i, err
 			}
-			w.col = 1
+			w.col = 2
 		} else {
 			_, err = w.wr.Write([]byte{c})
 			if err != nil {
