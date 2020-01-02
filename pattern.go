@@ -43,9 +43,12 @@ var (
 		"dec": time.December,
 	}
 	ampmMap = map[string]int{
-		"am":   0,
-		"a.m.": 0,
-		"pm":   12,
-		"p.m.": 12,
+		"am":       0,
+		"a.m.":     0,
+		"midnight": 0,
+		"night":    0,
+		"pm":       12,
+		"p.m.":     12,
+		"noon":     12,
 	}
 )
