@@ -206,33 +206,41 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
-		endhour, err := strconv.ParseInt(timeParsed[4], 10, 0)
-		if err != nil {
-			if !iCalHasError {
-				iCalWriteErrorMessage(wr, "Failed to parse the hour of the event end time:\n"+summary)
-				iCalHasError = true
-			}
-			return
-		}
-		endmin, err := strconv.ParseInt(timeParsed[5], 10, 0)
-		if err != nil {
-			if !iCalHasError {
-				iCalWriteErrorMessage(wr, "Failed to parse the minute of the event end time:\n"+summary)
-				iCalHasError = true
-			}
-			return
-		}
-		endampm, ok := ampmMap[timeParsed[6]]
-		if !ok {
-			if !iCalHasError {
-				iCalWriteErrorMessage(wr, "Failed to parse the a.m./p.m. part of the event end time:\n"+summary)
-				iCalHasError = true
-			}
-			return
-		}
 
 		dtstart := time.Date(int(year), month, int(day), int(starthour)%12+startampm, int(startmin), 0, 0, hkt)
-		dtend := time.Date(int(year), month, int(day), int(endhour)%12+endampm, int(endmin), 0, 0, hkt)
+
+		var dtend time.Time
+
+		if len(timeParsed[4]) == 0 || len(timeParsed[5]) == 0 || len(timeParsed[6]) == 0 {
+			dtend = dtstart.Add(1 * time.Hour)
+		} else {
+			endhour, err := strconv.ParseInt(timeParsed[4], 10, 0)
+			if err != nil {
+				if !iCalHasError {
+					iCalWriteErrorMessage(wr, "Failed to parse the hour of the event end time:\n"+summary)
+					iCalHasError = true
+				}
+				return
+			}
+			endmin, err := strconv.ParseInt(timeParsed[5], 10, 0)
+			if err != nil {
+				if !iCalHasError {
+					iCalWriteErrorMessage(wr, "Failed to parse the minute of the event end time:\n"+summary)
+					iCalHasError = true
+				}
+				return
+			}
+			endampm, ok := ampmMap[timeParsed[6]]
+			if !ok {
+				if !iCalHasError {
+					iCalWriteErrorMessage(wr, "Failed to parse the a.m./p.m. part of the event end time:\n"+summary)
+					iCalHasError = true
+				}
+				return
+			}
+
+			dtend = time.Date(int(year), month, int(day), int(endhour)%12+endampm, int(endmin), 0, 0, hkt)
+		}
 
 		_, err = io.WriteString(wr, "BEGIN:VEVENT\n")
 		if err != nil {

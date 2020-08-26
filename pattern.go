@@ -27,7 +27,7 @@ import (
 var (
 	matchSpace = regexp.MustCompile(`\s+`)
 	matchDate  = regexp.MustCompile(`^\s*(\d+)\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\s+(\d+)\s+[a-z]+\s*$`)
-	matchTime  = regexp.MustCompile(`^\s*\(\s*(\d+):(\d+)\s*(am|a\.m\.|pm|p\.m\.)\s*-\s*(\d+):(\d+)\s*(am|a\.m\.|midnight|night|pm|p\.m\.|noon)\s*\)\s*$`)
+	matchTime  = regexp.MustCompile(`^\s*\(\s*(\d+):(\d+)\s*(am|a\.m\.|midnight|night|pm|p\.m\.|noon)\s*(?:-\s*(\d+):(\d+)\s*(am|a\.m\.|midnight|night|pm|p\.m\.|noon)\s*)?\)\s*$`)
 	monthMap   = map[string]time.Month{
 		"jan": time.January,
 		"feb": time.February,
